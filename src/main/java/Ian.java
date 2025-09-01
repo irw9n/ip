@@ -5,11 +5,23 @@ public class Ian {
         System.out.println("____________________________________________________________");
     }
 
-    public static void add(String input, String[] list) {
+    public static void mark_or_unmark(Boolean toMark, String input, Task[] tasks) {
+        char lastChar = input.charAt(input.length() - 1);
+        int  index = (Integer.parseInt(String.valueOf(lastChar))) - 1;
+        tasks[index].isDone = toMark;
+
+        String output = toMark ? "done" : "not done yet";
         printSeparator();
-        for (int i = 0; i < list.length; i++) {
-            if (list[i] == null) {
-                list[i] = input;
+        System.out.println("Nice! I've marked this task as " + output + ":");
+        System.out.println("  [" + tasks[index].getStatusIcon() + "] " + tasks[index].description);
+        printSeparator();
+    }
+
+    public static void add(String input, Task[] tasks) {
+        printSeparator();
+        for (int i = 0; i < tasks.length; i++) {
+            if (tasks[i] == null) {
+                tasks[i] = new Task(input);
                 break;
             }
         }
@@ -17,10 +29,19 @@ public class Ian {
         printSeparator();
     }
 
-    public static void list(String[] list) {
-        for (int i = 0; i < list.length; i++) {
-            if (list[i] != null) {
-                System.out.println((i + 1) + ". " + list[i]);
+    public static void list(Task[] tasks) {
+        for (int i = 0; i < tasks.length; i++) {
+            if (tasks[i] != null) {
+                if (i == 0) {
+                    printSeparator();
+                    System.out.println("Here are the tasks in your list:");
+                }
+                System.out.println((i + 1) + ".[" + tasks[i].getStatusIcon() + "] " + tasks[i].description);
+            } else {
+                if (i != 0) {
+                    printSeparator();
+                }
+                break;
             }
         }
     }
@@ -32,7 +53,7 @@ public class Ian {
         System.out.println("What can I do for you?");
         printSeparator();
 
-        String[] List = new String[100];
+        Task[] tasks = new Task[100];
 
         Scanner scanner = new Scanner(System.in);
         String userInput;
@@ -46,13 +67,14 @@ public class Ian {
                 printSeparator();
                 break;
             } else if (userInput.equals("list")) {
-                list(List);
+                list(tasks);
 
+            } else if (userInput.contains("mark")) {
+                 mark_or_unmark(!userInput.contains("unmark"), userInput, tasks);
             } else {
-                add(userInput, List);
+                add(userInput, tasks);
             }
         } while (true);
-
 
         scanner.close();
 
