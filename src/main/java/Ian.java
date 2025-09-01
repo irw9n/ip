@@ -1,18 +1,38 @@
 import java.util.Scanner;
 
 public class Ian {
-    public static void echoUserInput(String input) {
+    private static void printSeparator() {
         System.out.println("____________________________________________________________");
-        System.out.println(input);
-        System.out.println("____________________________________________________________");
+    }
+
+    public static void add(String input, String[] list) {
+        printSeparator();
+        for (int i = 0; i < list.length; i++) {
+            if (list[i] == null) {
+                list[i] = input;
+                break;
+            }
+        }
+        System.out.println("added: " + input);
+        printSeparator();
+    }
+
+    public static void list(String[] list) {
+        for (int i = 0; i < list.length; i++) {
+            if (list[i] != null) {
+                System.out.println((i + 1) + ". " + list[i]);
+            }
+        }
     }
 
     public static void main(String[] args) {
 
-        System.out.println("____________________________________________________________");
+        printSeparator();
         System.out.println("Hello! I'm Ian");
         System.out.println("What can I do for you?");
-        System.out.println("____________________________________________________________");
+        printSeparator();
+
+        String[] List = new String[100];
 
         Scanner scanner = new Scanner(System.in);
         String userInput;
@@ -21,15 +41,18 @@ public class Ian {
             userInput = scanner.nextLine();
 
             if (userInput.equals("bye")) {
-                System.out.println("____________________________________________________________");
+                printSeparator();
                 System.out.println("Bye. Hope to see you again soon!");
-                System.out.println("____________________________________________________________");
+                printSeparator();
                 break;
+            } else if (userInput.equals("list")) {
+                list(List);
+
+            } else {
+                add(userInput, List);
             }
-
-            echoUserInput(userInput);
-
         } while (true);
+
 
         scanner.close();
 
