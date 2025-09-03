@@ -70,7 +70,7 @@ public class Ian {
                 list(tasks);
 
             } else if (userInput.contains("mark")) {
-                 mark_or_unmark(!userInput.contains("unmark"), userInput, tasks);
+                mark_or_unmark(!userInput.contains("unmark"), userInput, tasks);
             } else {
                 add(userInput, tasks);
             }
