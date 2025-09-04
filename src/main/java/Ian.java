@@ -9,7 +9,6 @@ public class Ian {
         char lastChar = input.charAt(input.length() - 1);
         int  index = (Integer.parseInt(String.valueOf(lastChar))) - 1;
         tasks[index].isDone = toMark;
-
         String output = toMark ? "done" : "not done yet";
         printSeparator();
         System.out.println("Nice! I've marked this task as " + output + ":");
@@ -17,32 +16,50 @@ public class Ian {
         printSeparator();
     }
 
-    public static void add(String input, Task[] tasks) {
+    public static int event(String input, Task[] tasks, int listSize) {
+        String[] inputParts = input.split("/from|/to");
+        String symbol = "[E]";
         printSeparator();
-        for (int i = 0; i < tasks.length; i++) {
-            if (tasks[i] == null) {
-                tasks[i] = new Task(input);
-                break;
-            }
-        }
-        System.out.println("added: " + input);
-        printSeparator();
+        tasks[listSize] = new Event(inputParts[0], inputParts[1], inputParts[2], symbol);
+        System.out.println("Got it. I've added this task:");
+        System.out.println("  " + tasks[listSize].toString());
+        System.out.println("Now you have " + (listSize + 1) + " " + (listSize == 0 ? "task" : "tasks") + " in the list.");
+        return listSize + 1;
     }
 
-    public static void list(Task[] tasks) {
-        for (int i = 0; i < tasks.length; i++) {
+    public static int deadline(String input, Task[] tasks, int listSize) {
+        String[] inputParts = input.split("/by");
+        String symbol = "[D]";
+        printSeparator();
+        tasks[listSize] = new Deadline(inputParts[0], inputParts[1], symbol);
+        System.out.println("Got it. I've added this task:");
+        System.out.println("  " + tasks[listSize].toString());
+        System.out.println("Now you have " + (listSize + 1) + " " + (listSize == 0 ? "task" : "tasks") + " in the list.");
+        return listSize + 1;
+    }
+
+    public static int toDo(String input, Task[] tasks, int listSize) {
+        String symbol = "[T]";
+        printSeparator();
+        tasks[listSize] = new Todo(input, symbol);
+        System.out.println("Got it. I've added this task:");
+        System.out.println("  " + tasks[listSize].toString());
+        System.out.println("Now you have " + (listSize + 1) + " " + (listSize == 0 ? "task" : "tasks") + " in the list.");
+        return listSize + 1;
+    }
+
+    public static void list(Task[] tasks, int listSize) {
+        for (int i = 0; i < listSize; i++) {
             if (tasks[i] != null) {
                 if (i == 0) {
                     printSeparator();
                     System.out.println("Here are the tasks in your list:");
                 }
-                System.out.println((i + 1) + ".[" + tasks[i].getStatusIcon() + "] " + tasks[i].description);
-            } else {
-                if (i != 0) {
-                    printSeparator();
-                }
-                break;
+                System.out.println((i + 1)+ ". " + tasks[i].toString());
             }
+        }
+        if (listSize > 0) {
+            printSeparator();
         }
     }
 
@@ -52,6 +69,8 @@ public class Ian {
         System.out.println("Hello! I'm Ian");
         System.out.println("What can I do for you?");
         printSeparator();
+
+        int listSize = 0;
 
         Task[] tasks = new Task[100];
 
@@ -67,12 +86,15 @@ public class Ian {
                 printSeparator();
                 break;
             } else if (userInput.equals("list")) {
-                list(tasks);
-
+                list(tasks, listSize);
             } else if (userInput.contains("mark")) {
                 mark_or_unmark(!userInput.contains("unmark"), userInput, tasks);
-            } else {
-                add(userInput, tasks);
+            } else if (userInput.contains("deadline")) {
+                listSize = deadline(userInput, tasks, listSize);
+            } else if  (userInput.contains("todo")) {
+                listSize = toDo(userInput, tasks, listSize);
+            } else if (userInput.contains("event")) {
+                listSize = event(userInput, tasks, listSize);
             }
         } while (true);
 
