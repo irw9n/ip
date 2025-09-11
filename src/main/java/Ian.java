@@ -96,18 +96,31 @@ public class Ian {
                     System.out.println("Bye. Hope to see you again soon!");
                     printSeparator();
                     break;
-                } else if (userInput.equals("list")) {
-                    list(tasks, listSize);
-                } else if (userInput.contains("mark")) {
-                    mark_or_unmark(!userInput.contains("unmark"), userInput, tasks);
-                } else if (userInput.contains("deadline")) {
-                    listSize = deadline(userInput, tasks, listSize);
-                } else if (userInput.contains("todo")) {
-                    listSize = toDo(userInput, tasks, listSize);
-                } else if (userInput.contains("event")) {
-                    listSize = event(userInput, tasks, listSize);
-                } else {
-                    throw new IanException("I'm sorry, but I don't know what you are typing. Please try again!");
+                }
+                String[] words = userInput.split(" ", 2);
+                String command = words[0].toLowerCase();
+
+                switch (command) {
+                    case "list":
+                        list(tasks, listSize);
+                        break;
+                    case "mark":
+                        mark_or_unmark(true, userInput, tasks);
+                        break;
+                    case "unmark":
+                        mark_or_unmark(false, userInput, tasks);
+                        break;
+                    case "todo":
+                        listSize = toDo(userInput, tasks, listSize);
+                        break;
+                    case "deadline":
+                        listSize = deadline(userInput, tasks, listSize);
+                        break;
+                    case "event":
+                        listSize = event(userInput, tasks, listSize);
+                        break;
+                    default:
+                        throw new IanException("I'm sorry, but I don't know what you are typing. Please try again!");
                 }
             } catch (IanException e) {
                 System.out.println(":( OOPS!!! " + e.getMessage());
