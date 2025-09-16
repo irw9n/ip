@@ -1,24 +1,39 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Ian {
     private static void printSeparator() {
         System.out.println("_________________________________________________________________________________________________");
     }
 
-    public static void mark_or_unmark(Boolean toMark, String input, Task[] tasks) throws IanException {
+    public static int delete(String input, ArrayList<Task> tasks, int listSize) throws IanException {
         char lastChar = input.charAt(input.length() - 1);
         int  index = (Integer.parseInt(String.valueOf(lastChar))) - 1;
-        if (tasks[index] == null) {
+        if (tasks.get(index) == null) {
             throw new IanException("Invalid task number selected. Make sure task number stays within the range of tasks.\nps: run the command \"list\" to view all the current tasks and their corresponding numbers.");
         }
-        tasks[index].isDone = toMark;
+        Task task_to_delete = tasks.get(index);
+        tasks.remove(index);
+        System.out.println("Noted. I've removed this task:");
+        System.out.println("  " + task_to_delete.toString());
+        System.out.println("Now you have " + (listSize - 1) + " " + (listSize > 1 ? "tasks" : "task") + " in the list.");
+        return listSize - 1;
+    }
+
+    public static void mark_or_unmark(Boolean toMark, String input, ArrayList<Task> tasks) throws IanException {
+        char lastChar = input.charAt(input.length() - 1);
+        int  index = (Integer.parseInt(String.valueOf(lastChar))) - 1;
+        if (tasks.get(index) == null) {
+            throw new IanException("Invalid task number selected. Make sure task number stays within the range of tasks.\nps: run the command \"list\" to view all the current tasks and their corresponding numbers.");
+        }
+        tasks.get(index).isDone = toMark;
         String output = toMark ? "done" : "not done yet";
         printSeparator();
         System.out.println("Nice! I've marked this task as " + output + ":");
-        System.out.println("  [" + tasks[index].getStatusIcon() + "] " + tasks[index].description);
+        System.out.println("  [" + tasks.get(index).getStatusIcon() + "] " + tasks.get(index).description);
     }
 
-    public static int event(String input, Task[] tasks, int listSize) throws IanException {
+    public static int event(String input, ArrayList<Task> tasks, int listSize) throws IanException {
         input = input.replace("event", "").trim();
         String[] inputParts = input.split("/from |/to");
         if (inputParts.length != 3) {
@@ -26,14 +41,14 @@ public class Ian {
         }
         String symbol = "[E]";
         printSeparator();
-        tasks[listSize] = new Event(inputParts[0], inputParts[1], inputParts[2], symbol);
+        tasks.add(listSize, new Event(inputParts[0], inputParts[1], inputParts[2], symbol));
         System.out.println("Got it. I've added this task:");
-        System.out.println("  " + tasks[listSize].toString());
+        System.out.println("  " + tasks.get(listSize).toString());
         System.out.println("Now you have " + (listSize + 1) + " " + (listSize == 0 ? "task" : "tasks") + " in the list.");
         return listSize + 1;
     }
 
-    public static int deadline(String input, Task[] tasks, int listSize) throws IanException{
+    public static int deadline(String input, ArrayList<Task> tasks, int listSize) throws IanException{
         input = input.replace("deadline", "").trim();
         String[] inputParts = input.split("/by");
         if (inputParts.length != 2) {
@@ -41,35 +56,35 @@ public class Ian {
         }
         String symbol = "[D]";
         printSeparator();
-        tasks[listSize] = new Deadline(inputParts[0], inputParts[1], symbol);
+        tasks.add(listSize, new Deadline(inputParts[0], inputParts[1], symbol));
         System.out.println("Got it. I've added this task:");
-        System.out.println("  " + tasks[listSize].toString());
+        System.out.println("  " + tasks.get(listSize).toString());
         System.out.println("Now you have " + (listSize + 1) + " " + (listSize == 0 ? "task" : "tasks") + " in the list.");
         return listSize + 1;
     }
 
-    public static int toDo(String input, Task[] tasks, int listSize) throws IanException {
+    public static int toDo(String input, ArrayList<Task> tasks, int listSize) throws IanException {
         input = input.replace("todo", "").trim();
         if (input.isEmpty()) {
             throw new IanException("You did not enter any tasks.\nFollow the format: \"todo <task description>\"");
         }
         String symbol = "[T]";
         printSeparator();
-        tasks[listSize] = new Todo(input, symbol);
+        tasks.add(listSize, new Todo(input, symbol));
         System.out.println("Got it. I've added this task:");
-        System.out.println("  " + tasks[listSize].toString());
+        System.out.println("  " + tasks.get(listSize).toString());
         System.out.println("Now you have " + (listSize + 1) + " " + (listSize == 0 ? "task" : "tasks") + " in the list.");
         return listSize + 1;
     }
 
-    public static void list(Task[] tasks, int listSize) {
+    public static void list(ArrayList<Task> tasks, int listSize) {
         for (int i = 0; i < listSize; i++) {
-            if (tasks[i] != null) {
+            if (tasks.get(i) != null) {
                 if (i == 0) {
                     printSeparator();
                     System.out.println("Here are the tasks in your list:");
                 }
-                System.out.println((i + 1)+ ". " + tasks[i].toString());
+                System.out.println((i + 1)+ ". " + tasks.get(i).toString());
             }
         }
     }
@@ -83,7 +98,7 @@ public class Ian {
 
         int listSize = 0;
 
-        Task[] tasks = new Task[100];
+        ArrayList<Task> tasks = new ArrayList<>();
 
         Scanner scanner = new Scanner(System.in);
         String userInput;
@@ -118,6 +133,9 @@ public class Ian {
                         break;
                     case "event":
                         listSize = event(userInput, tasks, listSize);
+                        break;
+                    case "delete":
+                        listSize = delete(userInput, tasks, listSize);
                         break;
                     default:
                         throw new IanException("I'm sorry, but I don't know what you are typing. Please try again!");
