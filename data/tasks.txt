@@ -1,0 +1,3 @@
+T | 0 | eat
+D | 0 | eat  |  4pm
+E | 0 | conference  | 1pm  |  4pm
