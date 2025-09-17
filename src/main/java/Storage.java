@@ -69,7 +69,7 @@ public class Storage {
 
         switch (type) {
             case "T":
-                Todo todo = new Todo(description, "T");
+                Todo todo = new Todo(description, "[T]");
                 if (isDone) todo.isDone = true;
                 return todo;
             case "D":
@@ -77,7 +77,7 @@ public class Storage {
                     throw new IanException("Missing deadline date in file.");
                 }
                 String by = parts[3];
-                Deadline deadline = new Deadline(description, by, "D");
+                Deadline deadline = new Deadline(description, by, "[D]");
                 if (isDone) deadline.isDone = true;
                 return deadline;
             case "E":
@@ -86,7 +86,7 @@ public class Storage {
                 }
                 String from = parts[3];
                 String to = parts[4];
-                Event event = new Event(description, from, to, "E");
+                Event event = new Event(description, from, to, "[E]");
                 if (isDone) event.isDone = true;
                 return event;
             default:
