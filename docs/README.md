@@ -8,7 +8,7 @@ you waiting for? Launch me in your terminal and let's start making your life eas
 ## Quick Start
 
 1. Ensure you have Java 17 in your Computer.
-2. Download the latest `Ian.jar` file from [here]().
+2. Download the latest `Ian.jar` file from [here](https://github.com/irw9n/ip/releases/tag/A-Release).
 3. Copy the file to the folder of your choice as the home folder for your Ian task manager.
 4. Open a command terminal, `cd` from the folder you have stored the jar file in, and run the `java -jar Ian.jar` command to run the application.
 5. Type any command in the terminal and press Enter to execute it. e.g. typing `list` and pressing Enter will show all your tasks.

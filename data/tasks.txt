@@ -1,4 +1,4 @@
 E | 1 | conference  | 1pm  |  5pm
 T | 1 | laugh
-E | 0 | play football  | 2pm  |  5pm
+E | 1 | play football  | 2pm  |  5pm
 T | 1 | watch football
