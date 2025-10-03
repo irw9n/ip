@@ -1,24 +1,36 @@
+package Ian;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
+import Ian.data.Task;
+import Ian.data.Todo;
+import Ian.data.Event;
+import Ian.data.Deadline;
+import Ian.exception.IanException;
 
 public class Storage {
-    private static final String DIRECTORY_PATH = "./data";
-    private static final String FILE_PATH = DIRECTORY_PATH + "/tasks.txt";
+    private static String dirPath = "./data";
+    private static String filePath =  dirPath + "/tasks.txt";
+
+    public Storage(String filePath) {
+        String[] paths = filePath.split("/");
+        this.dirPath = "./" + paths[0];
+        this.filePath = "./" + filePath;
+    }
 
     public static void createDirectory() throws IOException {
-        File dir = new File(DIRECTORY_PATH);
+        File dir = new File(dirPath);
         if (!dir.exists()) {
             boolean wasSuccessful = dir.mkdir();
             if (!wasSuccessful) {
-                System.err.println("Failed to create directory: " + DIRECTORY_PATH);
+                System.err.println("Failed to create directory: " + dirPath);
             }
         }
-        File file = new File(FILE_PATH);
+        File file = new File(filePath);
         if (!file.exists()) {
             file.createNewFile();
         }
@@ -26,7 +38,7 @@ public class Storage {
 
     public static void saveTasks(ArrayList<Task> tasks) throws IOException {
         createDirectory();
-        try (FileWriter writer = new FileWriter(FILE_PATH)) {
+        try (FileWriter writer = new FileWriter(filePath)) {
             for (Task task : tasks) {
                 writer.write(task.toFileFormat() + "\n");
             }
@@ -35,7 +47,7 @@ public class Storage {
 
     public static ArrayList<Task> loadTasks() throws FileNotFoundException {
         ArrayList<Task> tasks = new ArrayList<>();
-        File file = new File(FILE_PATH);
+        File file = new File(filePath);
         if (!file.exists()) {
             return tasks;
         }
@@ -70,7 +82,7 @@ public class Storage {
         switch (type) {
             case "T":
                 Todo todo = new Todo(description, "[T]");
-                if (isDone) todo.isDone = true;
+                if (isDone) todo.mark();
                 return todo;
             case "D":
                 if (parts.length < 4) {
@@ -78,7 +90,7 @@ public class Storage {
                 }
                 String by = parts[3];
                 Deadline deadline = new Deadline(description, by, "[D]");
-                if (isDone) deadline.isDone = true;
+                if (isDone) deadline.mark();
                 return deadline;
             case "E":
                 if (parts.length < 5) {
@@ -87,7 +99,7 @@ public class Storage {
                 String from = parts[3];
                 String to = parts[4];
                 Event event = new Event(description, from, to, "[E]");
-                if (isDone) event.isDone = true;
+                if (isDone) event.mark();
                 return event;
             default:
                 throw new IanException("Unknown task type in file.");

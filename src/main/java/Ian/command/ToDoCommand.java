@@ -1,0 +1,28 @@
+package Ian.command;
+import Ian.data.TaskList;
+import Ian.Ui;
+import Ian.Storage;
+import Ian.exception.IanException;
+
+import java.io.IOException;
+
+public class ToDoCommand extends Command {
+    private String description;
+
+    public ToDoCommand(String description) {
+        super("todo");
+        this.description = description;
+    }
+
+    @Override
+    public void execute(TaskList tasks,
+                        Storage storage,
+                        Ui ui) throws IanException, IOException {
+        tasks.addToDo(description);
+        ui.showLine();
+        ui.addTaskAcknowledgement();
+        ui.showMessage(tasks.listAddedTask());
+        System.out.println("Now you have " + tasks.getTaskListLength() + " " + (tasks.getTaskListLength() == 1 ? "task" : "tasks") + " in the list.");
+        Storage.saveTasks(tasks.fetchTasks());
+    }
+}
