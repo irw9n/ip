@@ -33,6 +33,22 @@ public class TaskList {
         return tasks.get(index).toString();
     }
 
+    public ArrayList<Task> findTasks(String query) {
+        ArrayList<Task> foundTasks = new ArrayList<>();
+        for (Task task : tasks) {
+            if (task.getDescription().toLowerCase().contains(query.toLowerCase())) {
+                foundTasks.add(task);
+            }
+        }
+        return foundTasks;
+    }
+
+    public void listFoundTasks(ArrayList<Task> foundTasks) {
+        for (int i = 0; i < foundTasks.size(); i++) {
+            System.out.println((i + 1) + ". " + foundTasks.get(i).toString());
+        }
+    }
+
     public int getTaskListLength() {
         return tasks.size();
     }
