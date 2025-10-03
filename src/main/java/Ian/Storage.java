@@ -36,6 +36,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Saves tasks to the data file.
+     *
+     * @param tasks List of tasks to save.
+     * @throws IOException if file writing fails.
+     */
     public static void saveTasks(ArrayList<Task> tasks) throws IOException {
         createDirectory();
         try (FileWriter writer = new FileWriter(filePath)) {
@@ -45,6 +51,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Load tasks from the data file at the start of every program.
+     *
+     * @return List of lines from the data file.
+     * @throws FileNotFoundException if data file is not found.
+     */
     public static ArrayList<Task> loadTasks() throws FileNotFoundException {
         ArrayList<Task> tasks = new ArrayList<>();
         File file = new File(filePath);

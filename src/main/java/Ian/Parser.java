@@ -14,6 +14,13 @@ import Ian.exception.IanException;
 
 
 public class Parser {
+    /**
+     * Parses the user input and return the corresponding Command object.
+     *
+     * @param userInput The user input string.
+     * @return The Command object corresponding to the user input.
+     * @throws IanException If the command is unknown or the format is invalid.
+     */
     public static Command parse(String userInput) throws IanException {
 
         String command = userInput.trim().split(" ")[0];

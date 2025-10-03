@@ -2,6 +2,11 @@ package Ian.data;
 
 public class Todo extends Task {
 
+    /**
+     * Adds a new Todo to the list of tasks.
+     * @param description Todo description.
+     * @param symbol Todo symbol to be displayed when listed "[T]".
+     */
     public Todo(String description, String symbol) {
         super(description, symbol);
     }

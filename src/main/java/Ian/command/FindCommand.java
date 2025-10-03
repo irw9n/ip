@@ -14,6 +14,14 @@ public class FindCommand extends Command {
         this.query = query;
     }
 
+    /**
+     * Executes the search of tasks that contain the query
+     * @param tasks List of tasks to search from
+     * @param storage Storage
+     * @param ui UI
+     * @throws IanException Error handling.
+     * @throws IOException Error handling.
+     */
     @Override
     public void execute(TaskList tasks,
                         Storage storage,

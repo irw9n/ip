@@ -4,6 +4,12 @@ public class Deadline extends Task {
 
     protected String by;
 
+    /**
+     * Adds a new Deadline to the list of tasks.
+     * @param description Deadline description
+     * @param by Deadline day/date AND/OR time
+     * @param symbol Deadline symbol to be displayed when listed "[D]"
+     */
     public Deadline(String description, String by, String symbol) {
         super(description, symbol);
         this.by = by;
