@@ -14,6 +14,14 @@ public class ToDoCommand extends Command {
         this.description = description;
     }
 
+    /**
+     * Executes the addition of a Todo task.
+     * @param tasks ArrayList of tasks to add to.
+     * @param storage Filesystem to save the new list of tasks into.
+     * @param ui UI for execution.
+     * @throws IanException in case of errors.
+     * @throws IOException in case of errors.
+     */
     @Override
     public void execute(TaskList tasks,
                         Storage storage,

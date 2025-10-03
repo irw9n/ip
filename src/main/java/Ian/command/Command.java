@@ -6,6 +6,9 @@ import Ian.exception.IanException;
 
 import java.io.IOException;
 
+/**
+ * Represents a Command class that has multiple children classes to handle all the different commands.
+ */
 public class Command {
     protected String commandWord;
 
