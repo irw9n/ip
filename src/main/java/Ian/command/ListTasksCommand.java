@@ -7,6 +7,13 @@ import Ian.exception.IanException;
 public class ListTasksCommand extends Command {
     public ListTasksCommand() {super("list");}
 
+    /**
+     * Executes the listing of all current tasks.
+     * @param tasks Current list of tasks.
+     * @param storage Storage
+     * @param ui UI
+     * @throws IanException Error Handling.
+     */
     @Override
     public void execute(TaskList tasks,
                         Storage storage,

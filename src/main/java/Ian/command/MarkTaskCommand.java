@@ -15,6 +15,14 @@ public class MarkTaskCommand extends Command {
         this.index = index;
     }
 
+    /**
+     * Executes the marking of a task
+     * @param tasks Current ArrayList of tasks.
+     * @param storage Storage
+     * @param ui UI
+     * @throws IanException Error Handling
+     * @throws IOException Error Handling
+     */
     @Override
     public void execute(TaskList tasks,
                         Storage storage,
