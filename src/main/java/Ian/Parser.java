@@ -9,6 +9,7 @@ import Ian.command.DeleteTaskCommand;
 import Ian.command.ListTasksCommand;
 import Ian.command.EventCommand;
 import Ian.command.ExitCommand;
+import Ian.command.FindCommand;
 import Ian.exception.IanException;
 
 
@@ -29,6 +30,7 @@ public class Parser {
             case "todo" -> parseToDoCommand(arguments);
             case "deadline" -> parseDeadlineCommand(arguments);
             case "event" -> parseEventCommand(arguments);
+            case "find" -> new FindCommand(arguments);
             case "delete" -> parseDeleteCommand(arguments);
             case "bye" -> new ExitCommand();
             default -> throw new IanException("I'm sorry, but I don't know what you are typing. Please try again!");
@@ -36,11 +38,16 @@ public class Parser {
     }
 
     private static Command parseMarkTaskCommand(String arguments) throws IanException {
+        if (arguments.isEmpty()) {
+            throw new IanException("Invalid mark task format. " +
+                    "Please try again with the proper format:" +
+                    "\n\"mark <task number>\"");
+        }
         for (int i = 0; i < arguments.length(); i++) {
             if (!Character.isDigit(arguments.charAt(i))) {
                 throw new IanException("Invalid mark task format. " +
                         "Please try again with the proper format:" +
-                        "\n\"mark <task number>\"\n");
+                        "\n\"mark <task number>\"");
             }
         }
 
@@ -50,11 +57,16 @@ public class Parser {
     }
 
     private static Command parseUnmarkTaskCommand(String arguments) throws IanException {
+        if (arguments.isEmpty()) {
+            throw new IanException("Invalid unmark task format. " +
+                    "Please try again with the proper format:" +
+                    "\n\"unmark <task number>\"");
+        }
         for (int i = 0; i < arguments.length(); i++) {
             if (!Character.isDigit(arguments.charAt(i))) {
                 throw new IanException("Invalid unmark task format. " +
                         "Please try again with the proper format:" +
-                        "\n\"unmark <task number>\"\n");
+                        "\n\"unmark <task number>\"");
             }
         }
 
@@ -98,6 +110,11 @@ public class Parser {
     }
 
     private static Command parseDeleteCommand(String arguments) throws IanException {
+        if (arguments.isEmpty()) {
+            throw new IanException("Invalid delete task format. " +
+                    "Please try again with the proper format:" +
+                    "\n\"delete <task number>\"");
+        }
         for (int i = 0; i < arguments.length(); i++) {
             if (!Character.isDigit(arguments.charAt(i))) {
                 throw new IanException("Invalid delete task format. " +
@@ -108,4 +125,5 @@ public class Parser {
         int index = (Integer.parseInt(arguments)) - 1;
         return new DeleteTaskCommand(index);
     }
+
 }
